@@ -96,7 +96,7 @@ namespace AfterFormat
                     HandleToolsMenu();
                     break;
                 case 5:
-                    // Optimizaciones - Empty for now
+                    HandleOptimizationsMenu();
                     break;
                 case 6:
                     DisplayInformation();
@@ -287,6 +287,59 @@ namespace AfterFormat
             }
         }
 
+        private static void HandleOptimizationsMenu()
+        {
+            Console.Clear();
+            DisplayBanner();
+
+            string[] menu = language == "en-US" ?
+            new string[] {
+                "1. Disable Background Blur on Lock Screen",
+                "2. Disable Startup Delay",
+                "3. Enable Ultimate Performance Power Mode",
+                "4. Disable C States C2 and C3",
+                "\n0. Back to menu"
+            } :
+            new string[] {
+                "1. Deshabilitar Background Blur en Pantalla de bloqueo",
+                "2. Deshabilitar Startup Delay",
+                "3. Habilitar modo energético Ultimate Performance",
+                "4. Deshabilitar C States C2 y C3",
+                "\n0. Regresar al menú"
+            };
+
+            foreach (string item in menu)
+            {
+                Console.WriteLine(item);
+            }
+
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                switch (choice)
+                {
+                    case 1:
+                        SetRegistryKey(@"HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System", "DisableAcrylicBackgroundOnLogon", 1);
+                        break;
+                    case 2:
+                        SetRegistryKey(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize", "Startupdelayinmsec", 0);
+                        break;
+                    case 3:
+                        ExecutePowerShellCommand("powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61");
+                        break;
+                    case 4:
+                        SetRegistryKey(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Processor", "Capabilities", 0x0007e066);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid option. Try again.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please try again.");
+            }
+        }
+
         private static void DownloadAndUnzip(string zipFileName, string executableName)
         {
             WebClient webClient = new WebClient();
@@ -323,6 +376,38 @@ namespace AfterFormat
             string downloadPath = Path.Combine(Path.GetTempPath(), localFileName);
             webClient.DownloadFile(fileUrl, downloadPath);
             Process.Start(downloadPath);
+        }
+
+        private static void SetRegistryKey(string path, string name, object value)
+        {
+            try
+            {
+                Microsoft.Win32.Registry.SetValue(path, name, value);
+                //Console.WriteLine($"Registry key set successfully: {path}\\{name}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to set registry key: {path}\\{name}. Error: {ex.Message}");
+            }
+        }
+
+        private static void ExecutePowerShellCommand(string command)
+        {
+            Process process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell",
+                    Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command {command}",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            string result = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            Console.WriteLine(result);
         }
     }
 }
