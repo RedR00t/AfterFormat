@@ -239,9 +239,10 @@ namespace AfterFormat
                 "1. Visual C++ AIO",
                 "2. 7Zip",
                 "3. WinRar",
-                "4. Ccleaner",
-                "5. CPU-Z",
-                "6. Core Temp",
+                "4. DirectX 2010 Redis",
+                "5. Ccleaner",
+                "6. CPU-Z",
+                "7. Core Temp",
                 "\n0. Back to menu"
             };
 
@@ -265,12 +266,15 @@ namespace AfterFormat
                         DownloadAndExecute($"Winrar{language.Substring(3, 2)}.exe");
                         break;
                     case 4:
-                        DownloadAndExecute("ccleaner.exe");
+                        DownloadAndExecute("directx_Jun2010_redist.exe");
                         break;
                     case 5:
-                        DownloadAndExecute("cpuz.exe");
+                        DownloadAndExecute("ccleaner.exe");
                         break;
                     case 6:
+                        DownloadAndExecute("cpuz.exe");
+                        break;
+                    case 7:
                         DownloadAndExecute("Core-Temp-setup.exe");
                         break;
                     default:
@@ -321,6 +325,5 @@ namespace AfterFormat
             webClient.DownloadFile(fileUrl, downloadPath);
             Process.Start(downloadPath);
         }
-
     }
 }
