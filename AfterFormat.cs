@@ -12,6 +12,7 @@ namespace AfterFormat
 
         static void Main(string[] args)
         {
+            DisplayBanner();
             Console.WriteLine("Welcome to AfterFormat!\n");
             Console.WriteLine("Would you like to install the application and tools in English (default) or Spanish?\n");
             Console.WriteLine("1. English (default)");
@@ -34,10 +35,23 @@ namespace AfterFormat
             }
         }
 
+        static void DisplayBanner()
+        {
+            Console.WriteLine("\n");
+            Console.WriteLine(" █████╗ ███████╗████████╗███████╗██████╗ ███████╗ ██████╗ ██████╗ ███╗   ███╗ █████╗ ████████╗");
+            Console.WriteLine("██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝██╔═══██╗██╔══██╗████╗ ████║██╔══██╗╚══██╔══╝");
+            Console.WriteLine("███████║█████╗     ██║   █████╗  ██████╔╝█████╗  ██║   ██║██████╔╝██╔████╔██║███████║   ██║   ");
+            Console.WriteLine("██╔══██║██╔══╝     ██║   ██╔══╝  ██╔══██╗██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║██╔══██║   ██║   ");
+            Console.WriteLine("██║  ██║██║        ██║   ███████╗██║  ██║██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║██║  ██║   ██║   ");
+            Console.WriteLine("╚═╝  ╚═╝╚═╝        ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ");
+            Console.WriteLine("                           https://github.com/redr00t/AfterFormat                             ");
+            Console.WriteLine("\n");
+        }
+
         static void DisplayMainMenu()
         {
             Console.Clear();
-
+            DisplayBanner();
             string[] menu = language == "en-US" ?
                 new string[] {
                     "1. Browsers",
@@ -93,21 +107,14 @@ namespace AfterFormat
         static void HandleBrowsersMenu()
         {
             Console.Clear();
-
-            string[] menu = language == "en-US" ?
-                new string[] {
+            DisplayBanner();
+            string[] menu = {
                     "1. Firefox",
                     "2. Firefox Nightly",
                     "3. Brave",
                     "4. Google Chrome",
-                    "5. Ungoogled Chromium"
-                } :
-                new string[] {
-                    "1. Firefox",
-                    "2. Firefox Nightly (Versión nocturna)",
-                    "3. Brave",
-                    "4. Google Chrome",
-                    "5. Chromium sin Google"
+                    "5. Ungoogled Chromium",
+                    "\n0. Back to menu"
                 };
 
             foreach (var item in menu)
@@ -149,11 +156,12 @@ namespace AfterFormat
         static void HandleGamingMenu()
         {
             Console.Clear();
-
+            DisplayBanner();
             string[] menu = {
                 "1. Steam",
                 "2. Epic Games Launcher",
-                "3. Battle.Net"
+                "3. Battle.Net",
+                "\n0. Back to menu"
             };
 
             foreach (var item in menu)
@@ -170,7 +178,7 @@ namespace AfterFormat
                         DownloadAndExecute("SteamSetup.exe");
                         break;
                     case 2:
-                        DownloadAndExecute("EpicInstaller.msi");
+                        DownloadAndExecuteDirectly("https://epicgames-download1.akamaized.net/Builds/UnrealEngineLauncher/Installers/Win32/EpicInstaller-15.7.0.msi?launcherfilename=EpicInstaller-15.7.0.msi", "EpicInstaller-15.7.0.msi");
                         break;
                     case 3:
                         DownloadAndExecute("Battle.net-Setup.exe");
@@ -189,10 +197,11 @@ namespace AfterFormat
         static void HandleDriversMenu()
         {
             Console.Clear();
-
+            DisplayBanner();
             string[] menu = {
                 "1. Driver Booster",
-                "2. Driver Easy"
+                "2. Driver Easy",
+                "\n0. Back to menu"
             };
 
             foreach (var item in menu)
@@ -225,13 +234,15 @@ namespace AfterFormat
         static void HandleToolsMenu()
         {
             Console.Clear();
-
+            DisplayBanner();
             string[] menu = {
-                "1. 7Zip",
-                "2. Winrar",
-                "3. Ccleaner",
-                "4. CPU-Z",
-                "5. Core Temp"
+                "1. Visual C++ AIO",
+                "2. 7Zip",
+                "3. WinRar",
+                "4. Ccleaner",
+                "5. CPU-Z",
+                "6. Core Temp",
+                "\n0. Back to menu"
             };
 
             foreach (var item in menu)
@@ -245,18 +256,21 @@ namespace AfterFormat
                 switch (choice)
                 {
                     case 1:
-                        DownloadAndExecute("7zip.exe");
+                        DownloadAndExecuteDirectly("https://github.com/abbodi1406/vcredist/releases/download/v0.75.0/VisualCppRedist_AIO_x86_x64.exe", "VisualCppRedist_AIO_x86_x64.exe");
                         break;
                     case 2:
-                        DownloadAndExecute($"Winrar{language.Substring(3, 2)}.exe");
+                        DownloadAndExecute("7zip.exe");
                         break;
                     case 3:
-                        DownloadAndExecute("ccleaner.exe");
+                        DownloadAndExecute($"Winrar{language.Substring(3, 2)}.exe");
                         break;
                     case 4:
-                        DownloadAndExecute("cpuz.exe");
+                        DownloadAndExecute("ccleaner.exe");
                         break;
                     case 5:
+                        DownloadAndExecute("cpuz.exe");
+                        break;
+                    case 6:
                         DownloadAndExecute("Core-Temp-setup.exe");
                         break;
                     default:
@@ -299,5 +313,14 @@ namespace AfterFormat
             webClient.DownloadFile(BaseGitHubLink + fileName, downloadPath);
             Process.Start(downloadPath);
         }
+
+        static void DownloadAndExecuteDirectly(string fileUrl, string localFileName)
+        {
+            WebClient webClient = new WebClient();
+            string downloadPath = Path.Combine(Path.GetTempPath(), localFileName);
+            webClient.DownloadFile(fileUrl, downloadPath);
+            Process.Start(downloadPath);
+        }
+
     }
 }
