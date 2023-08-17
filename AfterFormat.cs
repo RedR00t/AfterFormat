@@ -5,12 +5,12 @@ using System.Net;
 
 namespace AfterFormat
 {
-    class Program
+    internal class Program
     {
         private static readonly string BaseGitHubLink = "https://raw.githubusercontent.com/redr00t/AfterFormat/main/Files/";
         private static string language = "en-US"; // Por defecto en inglés
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             DisplayBanner();
             Console.WriteLine("Welcome to AfterFormat!\n");
@@ -27,15 +27,18 @@ namespace AfterFormat
             while (true)
             {
                 DisplayMainMenu();
-                int option;
-                if (int.TryParse(Console.ReadLine(), out option))
+                if (int.TryParse(Console.ReadLine(), out int option))
+                {
                     HandleMainMenuSelection(option);
+                }
                 else
+                {
                     Console.WriteLine("Invalid input. Please try again.");
+                }
             }
         }
 
-        static void DisplayBanner()
+        private static void DisplayBanner()
         {
             Console.WriteLine("\n");
             Console.WriteLine(" █████╗ ███████╗████████╗███████╗██████╗ ███████╗ ██████╗ ██████╗ ███╗   ███╗ █████╗ ████████╗");
@@ -48,7 +51,7 @@ namespace AfterFormat
             Console.WriteLine("\n");
         }
 
-        static void DisplayMainMenu()
+        private static void DisplayMainMenu()
         {
             Console.Clear();
             DisplayBanner();
@@ -70,13 +73,13 @@ namespace AfterFormat
                     "6. Información"
                 };
 
-            foreach (var item in menu)
+            foreach (string item in menu)
             {
                 Console.WriteLine(item);
             }
         }
 
-        static void HandleMainMenuSelection(int option)
+        private static void HandleMainMenuSelection(int option)
         {
             switch (option)
             {
@@ -104,7 +107,7 @@ namespace AfterFormat
             }
         }
 
-        static void HandleBrowsersMenu()
+        private static void HandleBrowsersMenu()
         {
             Console.Clear();
             DisplayBanner();
@@ -117,13 +120,12 @@ namespace AfterFormat
                     "\n0. Back to menu"
                 };
 
-            foreach (var item in menu)
+            foreach (string item in menu)
             {
                 Console.WriteLine(item);
             }
 
-            int choice;
-            if (int.TryParse(Console.ReadLine(), out choice))
+            if (int.TryParse(Console.ReadLine(), out int choice))
             {
                 switch (choice)
                 {
@@ -153,7 +155,7 @@ namespace AfterFormat
             }
         }
 
-        static void HandleGamingMenu()
+        private static void HandleGamingMenu()
         {
             Console.Clear();
             DisplayBanner();
@@ -164,13 +166,12 @@ namespace AfterFormat
                 "\n0. Back to menu"
             };
 
-            foreach (var item in menu)
+            foreach (string item in menu)
             {
                 Console.WriteLine(item);
             }
 
-            int choice;
-            if (int.TryParse(Console.ReadLine(), out choice))
+            if (int.TryParse(Console.ReadLine(), out int choice))
             {
                 switch (choice)
                 {
@@ -194,7 +195,7 @@ namespace AfterFormat
             }
         }
 
-        static void HandleDriversMenu()
+        private static void HandleDriversMenu()
         {
             Console.Clear();
             DisplayBanner();
@@ -204,13 +205,12 @@ namespace AfterFormat
                 "\n0. Back to menu"
             };
 
-            foreach (var item in menu)
+            foreach (string item in menu)
             {
                 Console.WriteLine(item);
             }
 
-            int choice;
-            if (int.TryParse(Console.ReadLine(), out choice))
+            if (int.TryParse(Console.ReadLine(), out int choice))
             {
                 switch (choice)
                 {
@@ -231,7 +231,7 @@ namespace AfterFormat
             }
         }
 
-        static void HandleToolsMenu()
+        private static void HandleToolsMenu()
         {
             Console.Clear();
             DisplayBanner();
@@ -246,13 +246,12 @@ namespace AfterFormat
                 "\n0. Back to menu"
             };
 
-            foreach (var item in menu)
+            foreach (string item in menu)
             {
                 Console.WriteLine(item);
             }
 
-            int choice;
-            if (int.TryParse(Console.ReadLine(), out choice))
+            if (int.TryParse(Console.ReadLine(), out int choice))
             {
                 switch (choice)
                 {
@@ -288,7 +287,7 @@ namespace AfterFormat
             }
         }
 
-        static void DownloadAndUnzip(string zipFileName, string executableName)
+        private static void DownloadAndUnzip(string zipFileName, string executableName)
         {
             WebClient webClient = new WebClient();
             string downloadPath = Path.Combine(Path.GetTempPath(), zipFileName);
@@ -300,7 +299,7 @@ namespace AfterFormat
             Process.Start(Path.Combine(unzipPath, executableName));
         }
 
-        static void DisplayInformation()
+        private static void DisplayInformation()
         {
             Console.Clear();
             Console.WriteLine("AppName: AfterFormat");
@@ -310,7 +309,7 @@ namespace AfterFormat
             Console.ReadKey();
         }
 
-        static void DownloadAndExecute(string fileName)
+        private static void DownloadAndExecute(string fileName)
         {
             WebClient webClient = new WebClient();
             string downloadPath = Path.Combine(Path.GetTempPath(), fileName);
@@ -318,7 +317,7 @@ namespace AfterFormat
             Process.Start(downloadPath);
         }
 
-        static void DownloadAndExecuteDirectly(string fileUrl, string localFileName)
+        private static void DownloadAndExecuteDirectly(string fileUrl, string localFileName)
         {
             WebClient webClient = new WebClient();
             string downloadPath = Path.Combine(Path.GetTempPath(), localFileName);
