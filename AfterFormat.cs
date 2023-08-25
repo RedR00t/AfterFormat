@@ -136,7 +136,7 @@ namespace AfterFormat
                         DownloadAndExecute($"Firefox Nightly Installer.{language}.exe");
                         break;
                     case 3:
-                        DownloadAndExecute("BraveBrowser.exe");
+                        DownloadAndExecuteDirectly("https://referrals.brave.com/latest/BraveBrowserSetup-BRV030.exe", "BraveBrowserSetup-BRV030.exe");
                         break;
                     case 4:
                         DownloadAndExecute("ChromeSetup.exe");
@@ -298,13 +298,15 @@ namespace AfterFormat
                 "2. Disable Startup Delay",
                 "3. Enable Ultimate Performance Power Mode",
                 "4. Disable C States C2 and C3",
+                "5. Disable MS-GamingOverlay",
                 "\n0. Back to menu"
-            } :
-            new string[] {
+                    } :
+                    new string[] {
                 "1. Deshabilitar Background Blur en Pantalla de bloqueo",
                 "2. Deshabilitar Startup Delay",
                 "3. Habilitar modo energético Ultimate Performance",
                 "4. Deshabilitar C States C2 y C3",
+                "5. Deshabilitar MS-GamingOverlay",
                 "\n0. Regresar al menú"
             };
 
@@ -324,10 +326,15 @@ namespace AfterFormat
                         SetRegistryKey(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize", "Startupdelayinmsec", 0);
                         break;
                     case 3:
-                        ExecutePowerShellCommand("powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61");
+                        string currentDirectory = Directory.GetCurrentDirectory();
+                        ExecutePowerShellCommand($"powercfg -import \"{currentDirectory}\\Ultimate.pow\"");
                         break;
                     case 4:
                         SetRegistryKey(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Processor", "Capabilities", 0x0007e066);
+                        break;
+                    case 5:
+                        SetRegistryKey(@"HKEY_CURRENT_USER\System\GameConfigStore", "GameDVR_Enabled", 0);
+                        SetRegistryKey(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR", "AppCaptureEnabled", 0);
                         break;
                     default:
                         Console.WriteLine("Invalid option. Try again.");
@@ -339,6 +346,7 @@ namespace AfterFormat
                 Console.WriteLine("Invalid input. Please try again.");
             }
         }
+
 
         private static void DownloadAndUnzip(string zipFileName, string executableName)
         {
