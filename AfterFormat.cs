@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Linq;
 
 namespace AfterFormat
 {
@@ -299,6 +300,7 @@ namespace AfterFormat
                 "3. Enable Ultimate Performance Power Mode",
                 "4. Disable C States C2 and C3",
                 "5. Disable MS-GamingOverlay",
+                "6. Disable Multi-Plane Overlay (MPO)",
                 "\n0. Back to menu"
                     } :
                     new string[] {
@@ -307,6 +309,7 @@ namespace AfterFormat
                 "3. Habilitar modo energético Ultimate Performance",
                 "4. Deshabilitar C States C2 y C3",
                 "5. Deshabilitar MS-GamingOverlay",
+                "6. Deshabilitar Multi-Plane Overlay (MPO)",
                 "\n0. Regresar al menú"
             };
 
@@ -336,6 +339,9 @@ namespace AfterFormat
                         SetRegistryKey(@"HKEY_CURRENT_USER\System\GameConfigStore", "GameDVR_Enabled", 0);
                         SetRegistryKey(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR", "AppCaptureEnabled", 0);
                         break;
+                    case 6:
+                        SetRegistryKey(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Dwm", "OverlayTestMode", 5);
+                        break;
                     default:
                         Console.WriteLine("Invalid option. Try again.");
                         break;
@@ -345,6 +351,94 @@ namespace AfterFormat
             {
                 Console.WriteLine("Invalid input. Please try again.");
             }
+        }
+
+        private static void SetRegistryKey(string path, string name, object value)
+        {
+            try
+            {
+                var parts = path.Split(new string[] { "\\" }, 2, StringSplitOptions.None);
+                if (parts.Length < 2)
+                {
+                    throw new Exception($"Invalid registry path format: {path}");
+                }
+
+                var hivePart = parts[0];
+                var subPath = parts[1];
+
+                Microsoft.Win32.RegistryKey baseKey;
+
+                switch (hivePart)
+                {
+                    case "HKEY_CLASSES_ROOT":
+                        baseKey = Microsoft.Win32.Registry.ClassesRoot;
+                        break;
+                    case "HKEY_CURRENT_USER":
+                        baseKey = Microsoft.Win32.Registry.CurrentUser;
+                        break;
+                    case "HKEY_LOCAL_MACHINE":
+                        baseKey = Microsoft.Win32.Registry.LocalMachine;
+                        break;
+                    case "HKEY_USERS":
+                        baseKey = Microsoft.Win32.Registry.Users;
+                        break;
+                    case "HKEY_CURRENT_CONFIG":
+                        baseKey = Microsoft.Win32.Registry.CurrentConfig;
+                        break;
+                    default:
+                        throw new Exception($"Unsupported hive: {hivePart}");
+                }
+                using (var key = baseKey.CreateSubKey(subPath, true))
+                {
+                    if (key == null)
+                    {
+                        throw new Exception($"Failed to open or create registry key at {path}");
+                    }
+                    key.SetValue(name, value);
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"Failed to set registry key: {path}\\{name}. Error: {ex.Message}";
+                Console.WriteLine(errorMessage);
+                AppendToLog(errorMessage);
+            }
+        }
+
+        private static void AppendToLog(string message)
+        {
+            string logFilePath = "log.txt";
+            try
+            {
+                using (StreamWriter sw = File.AppendText(logFilePath))
+                {
+                    sw.WriteLine($"{DateTime.Now}: {message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to write to log file. Error: {ex.Message}");
+            }
+        }
+
+
+        private static void ExecutePowerShellCommand(string command)
+        {
+            Process process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell",
+                    Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command {command}",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            string result = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            Console.WriteLine(result);
         }
 
 
@@ -388,38 +482,6 @@ namespace AfterFormat
             string downloadPath = Path.Combine(Path.GetTempPath(), localFileName);
             webClient.DownloadFile(fileUrl, downloadPath);
             Process.Start(downloadPath);
-        }
-
-        private static void SetRegistryKey(string path, string name, object value)
-        {
-            try
-            {
-                Microsoft.Win32.Registry.SetValue(path, name, value);
-                //Console.WriteLine($"Registry key set successfully: {path}\\{name}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to set registry key: {path}\\{name}. Error: {ex.Message}");
-            }
-        }
-
-        private static void ExecutePowerShellCommand(string command)
-        {
-            Process process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "powershell",
-                    Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command {command}",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process.Start();
-            string result = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            Console.WriteLine(result);
         }
     }
 }
