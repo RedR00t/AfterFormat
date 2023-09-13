@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Linq;
 
 namespace AfterFormat
 {
@@ -15,7 +14,7 @@ namespace AfterFormat
         {
             DisplayBanner();
             Console.WriteLine("Welcome to AfterFormat!\n");
-            Console.WriteLine("Would you like to install the application and tools in English (default) or Spanish?\n");
+            Console.WriteLine("Would you like to run the application and tools in English (default) or Spanish?\n");
             Console.WriteLine("1. English (default)");
             Console.WriteLine("2. Spanish");
 
@@ -399,28 +398,9 @@ namespace AfterFormat
             }
             catch (Exception ex)
             {
-                string errorMessage = $"Failed to set registry key: {path}\\{name}. Error: {ex.Message}";
-                Console.WriteLine(errorMessage);
-                AppendToLog(errorMessage);
+                Console.WriteLine($"Failed to set registry key: {path}\\{name}. Error: {ex.Message}");
             }
         }
-
-        private static void AppendToLog(string message)
-        {
-            string logFilePath = "log.txt";
-            try
-            {
-                using (StreamWriter sw = File.AppendText(logFilePath))
-                {
-                    sw.WriteLine($"{DateTime.Now}: {message}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to write to log file. Error: {ex.Message}");
-            }
-        }
-
 
         private static void ExecutePowerShellCommand(string command)
         {
