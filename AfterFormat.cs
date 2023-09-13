@@ -355,6 +355,10 @@ namespace AfterFormat
             webClient.DownloadFile(BaseGitHubLink + zipFileName, downloadPath);
 
             string unzipPath = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(zipFileName));
+            if (Directory.Exists(unzipPath))
+            {
+                Directory.Delete(unzipPath, true);
+            }
             System.IO.Compression.ZipFile.ExtractToDirectory(downloadPath, unzipPath);
 
             Process.Start(Path.Combine(unzipPath, executableName));

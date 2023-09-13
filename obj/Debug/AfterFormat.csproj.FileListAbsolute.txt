@@ -4,3 +4,9 @@ C:\Users\Pablo\Desktop\Repositorios\AfterFormat\bin\Debug\AfterFormat.pdb
 C:\Users\Pablo\Desktop\Repositorios\AfterFormat\obj\Debug\AfterFormat.csproj.CoreCompileInputs.cache
 C:\Users\Pablo\Desktop\Repositorios\AfterFormat\obj\Debug\AfterFormat.exe
 C:\Users\Pablo\Desktop\Repositorios\AfterFormat\obj\Debug\AfterFormat.pdb
+C:\Users\Pablo\Desktop\github\AfterFormat\bin\Debug\AfterFormat.exe.config
+C:\Users\Pablo\Desktop\github\AfterFormat\bin\Debug\AfterFormat.exe
+C:\Users\Pablo\Desktop\github\AfterFormat\bin\Debug\AfterFormat.pdb
+C:\Users\Pablo\Desktop\github\AfterFormat\obj\Debug\AfterFormat.csproj.CoreCompileInputs.cache
+C:\Users\Pablo\Desktop\github\AfterFormat\obj\Debug\AfterFormat.exe
+C:\Users\Pablo\Desktop\github\AfterFormat\obj\Debug\AfterFormat.pdb
