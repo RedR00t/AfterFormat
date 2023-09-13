@@ -398,7 +398,25 @@ namespace AfterFormat
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to set registry key: {path}\\{name}. Error: {ex.Message}");
+                string errorMessage = $"Failed to set registry key: {path}\\{name}. Error: {ex.Message}";
+                Console.WriteLine(errorMessage);
+                AppendToLog(errorMessage);
+            }
+        }
+
+        private static void AppendToLog(string message)
+        {
+            string logFilePath = "log.txt";
+            try
+            {
+                using (StreamWriter sw = File.AppendText(logFilePath))
+                {
+                    sw.WriteLine($"{DateTime.Now}: {message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to write to log file. Error: {ex.Message}");
             }
         }
 
