@@ -1,1 +1,0 @@
-13/09/2023 15:36:31: Failed to set registry key: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Dwm\OverlayTestMode. Error: Se denegó el acceso a la clave de Registro 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Dwm'.
