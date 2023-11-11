@@ -300,6 +300,7 @@ namespace AfterFormat
                 "4. Disable C States C2 and C3",
                 "5. Disable MS-GamingOverlay",
                 "6. Disable Multi-Plane Overlay (MPO)",
+                "7. Disable Bing Search in the Start Menu",
                 "\n0. Back to menu"
                     } :
                     new string[] {
@@ -309,6 +310,7 @@ namespace AfterFormat
                 "4. Deshabilitar C States C2 y C3",
                 "5. Deshabilitar MS-GamingOverlay",
                 "6. Deshabilitar Multi-Plane Overlay (MPO)",
+                "7. Deshabilitar Busqueda de Bing en menú de inicio",
                 "\n0. Regresar al menú"
             };
 
@@ -340,6 +342,9 @@ namespace AfterFormat
                         break;
                     case 6:
                         SetRegistryKey(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Dwm", "OverlayTestMode", 5);
+                        break;
+                    case 6:
+                        SetRegistryKey(@"HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", 1);
                         break;
                     default:
                         Console.WriteLine("Invalid option. Try again.");
