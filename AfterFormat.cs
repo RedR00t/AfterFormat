@@ -343,7 +343,7 @@ namespace AfterFormat
                     case 6:
                         SetRegistryKey(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Dwm", "OverlayTestMode", 5);
                         break;
-                    case 6:
+                    case 7:
                         SetRegistryKey(@"HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", 1);
                         break;
                     default:
