@@ -10,3 +10,4 @@ C:\Users\Pablo\Desktop\github\AfterFormat\bin\Debug\AfterFormat.pdb
 C:\Users\Pablo\Desktop\github\AfterFormat\obj\Debug\AfterFormat.csproj.CoreCompileInputs.cache
 C:\Users\Pablo\Desktop\github\AfterFormat\obj\Debug\AfterFormat.exe
 C:\Users\Pablo\Desktop\github\AfterFormat\obj\Debug\AfterFormat.pdb
+C:\Users\Pablo\Desktop\GitHub\AfterFormat\obj\Debug\AfterFormat.csproj.AssemblyReference.cache

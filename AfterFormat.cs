@@ -294,23 +294,27 @@ namespace AfterFormat
 
             string[] menu = language == "en-US" ?
             new string[] {
-                "1. Disable Background Blur on Lock Screen",
-                "2. Disable Startup Delay",
-                "3. Enable Ultimate Performance Power Mode",
-                "4. Disable C States C2 and C3",
-                "5. Disable MS-GamingOverlay",
-                "6. Disable Multi-Plane Overlay (MPO)",
-                "7. Disable Bing Search in the Start Menu",
+                "1. Apply all recommended optimizations",
+                "2. Disable Background Blur on Lock Screen",
+                "3. Disable Startup Delay",
+                "4. Enable Ultimate Performance Power Mode",
+                "5. Disable C States C2 and C3",
+                "6. Disable MS-GamingOverlay",
+                "7. Disable Multi-Plane Overlay (MPO)",
+                "8. Disable Bing Search in the Start Menu",
+                "9. Restore legacy Alt + Tab",
                 "\n0. Back to menu"
-                    } :
-                    new string[] {
-                "1. Deshabilitar Background Blur en Pantalla de bloqueo",
-                "2. Deshabilitar Startup Delay",
-                "3. Habilitar modo energético Ultimate Performance",
-                "4. Deshabilitar C States C2 y C3",
-                "5. Deshabilitar MS-GamingOverlay",
-                "6. Deshabilitar Multi-Plane Overlay (MPO)",
-                "7. Deshabilitar Busqueda de Bing en menú de inicio",
+            } :
+            new string[] {
+                "1. Aplicar todas las optimizaciones recomendadas",
+                "2. Deshabilitar Background Blur en Pantalla de bloqueo",
+                "3. Deshabilitar Startup Delay",
+                "4. Habilitar modo energético Ultimate Performance",
+                "5. Deshabilitar C States C2 y C3",
+                "6. Deshabilitar MS-GamingOverlay",
+                "7. Deshabilitar Multi-Plane Overlay (MPO)",
+                "8. Deshabilitar Busqueda de Bing en menú de inicio",
+                "9. Restaurar Alt + Tab de legado",
                 "\n0. Regresar al menú"
             };
 
@@ -324,27 +328,31 @@ namespace AfterFormat
                 switch (choice)
                 {
                     case 1:
-                        SetRegistryKey(@"HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System", "DisableAcrylicBackgroundOnLogon", 1);
+                        SetRegistryKey(@"HKEY_CURRENT_USER\System\GameConfigStore", "GameDVR_Enabled", 0);
+                        SetRegistryKey(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR", "AppCaptureEnabled", 0);
+                        SetRegistryKey(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer", "AltTabSettings", 1);
                         break;
                     case 2:
-                        SetRegistryKey(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize", "StartupDelayInMSec", 0);
+                        SetRegistryKey(@"HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System", "DisableAcrylicBackgroundOnLogon", 1);
                         break;
                     case 3:
+                        SetRegistryKey(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize", "StartupDelayInMSec", 0);
+                        break;
+                    case 4:
                         string currentDirectory = Directory.GetCurrentDirectory();
                         ExecutePowerShellCommand($"powercfg -import \"{currentDirectory}\\Ultimate.pow\"");
                         break;
-                    case 4:
-                        SetRegistryKey(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Processor", "Capabilities", 0x0007e066);
-                        break;
                     case 5:
-                        SetRegistryKey(@"HKEY_CURRENT_USER\System\GameConfigStore", "GameDVR_Enabled", 0);
-                        SetRegistryKey(@"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR", "AppCaptureEnabled", 0);
+                        SetRegistryKey(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Processor", "Capabilities", 0x0007e066);
                         break;
                     case 6:
                         SetRegistryKey(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Dwm", "OverlayTestMode", 5);
                         break;
                     case 7:
                         SetRegistryKey(@"HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", 1);
+                        break;
+                    case 8:
+                        SetRegistryKey(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer", "AltTabSettings", 1);
                         break;
                     default:
                         Console.WriteLine("Invalid option. Try again.");
